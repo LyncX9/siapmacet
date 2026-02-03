@@ -351,3 +351,9 @@ def api_key_status():
     except Exception as e:
         return {"error": str(e)}
 
+
+@app.get("/debug_init_db")
+def debug_init_db():
+    from loader_geojson import init_db
+    result = init_db()
+    return result
