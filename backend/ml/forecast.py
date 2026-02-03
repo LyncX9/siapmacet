@@ -41,11 +41,11 @@ def get_data_stats() -> dict:
             # Get date range and record counts
             result = conn.execute(text("""
                 SELECT 
-                    MIN(recorded_at) as first_record,
-                    MAX(recorded_at) as last_record,
+                    MIN(created_at) as first_record,
+                    MAX(created_at) as last_record,
                     COUNT(*) as total_records,
                     COUNT(DISTINCT road_id) as total_roads,
-                    COUNT(DISTINCT DATE(recorded_at)) as total_days
+                    COUNT(DISTINCT DATE(created_at)) as total_days
                 FROM traffic_history
             """))
             row = result.fetchone()
