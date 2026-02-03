@@ -2,7 +2,7 @@
     "rewrites": [
         {
             "source": "/api/:path*",
-            "destination": "https://siapmacet.onrender.com"
+            "destination": "https://siapmacet.onrender.com/:path*"
         },
         {
             "source": "/(.*)",
