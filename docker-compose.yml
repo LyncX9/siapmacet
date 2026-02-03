@@ -1,0 +1,42 @@
+services:
+  # Database Service
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin123}
+      POSTGRES_DB: ${POSTGRES_DB:-siapmacet}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # Backend API + ML Service
+  backend:
+    build: ./backend
+    restart: always
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-admin}:${POSTGRES_PASSWORD:-admin123}@db:5432/${POSTGRES_DB:-siapmacet}
+      - TOMTOM_API_KEY=${TOMTOM_API_KEY}
+      - TOMTOM_API_KEY_1=${TOMTOM_API_KEY_1}
+      - TOMTOM_API_KEY_2=${TOMTOM_API_KEY_2}
+      # Add more keys as needed in .env
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/models:/app/models # Persist trained models
+
+  # Frontend Dashboard
+  dashboard:
+    build: ./dashboard
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
