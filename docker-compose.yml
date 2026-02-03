@@ -21,13 +21,20 @@ services:
       - TOMTOM_API_KEY=${TOMTOM_API_KEY}
       - TOMTOM_API_KEY_1=${TOMTOM_API_KEY_1}
       - TOMTOM_API_KEY_2=${TOMTOM_API_KEY_2}
+      - REDIS_HOST=redis
       # Add more keys as needed in .env
     depends_on:
       - db
+      - redis
     ports:
       - "8000:8000"
     volumes:
       - ./backend/models:/app/models # Persist trained models
+
+  # Redis Cache
+  redis:
+    image: redis:alpine
+    restart: always
 
   # Frontend Dashboard
   dashboard:

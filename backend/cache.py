@@ -1,8 +1,11 @@
 import time
 import redis
 
+import os
 try:
-    r = redis.Redis(host="localhost", port=6379, decode_responses=True)
+    host = os.getenv("REDIS_HOST", "localhost")
+    port = int(os.getenv("REDIS_PORT", 6379))
+    r = redis.Redis(host=host, port=port, decode_responses=True)
     r.ping()
 except:
     r = None
